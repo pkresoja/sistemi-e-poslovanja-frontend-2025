@@ -19,6 +19,16 @@ export interface MovieModel {
     createdAt: string
     updatedAt: string | null
     director: DirectorModel
-    movieActors: ActorModel[]
-    movieGenres: GenreModel[]
+    movieActors: {
+        movieActorId: number
+        movieId: number
+        actorId: number
+        actor: ActorModel
+    }[]
+    movieGenres: {
+        movieGenreId: number
+        movieId: number
+        genreId: number
+        genre: GenreModel
+    }[]
 }

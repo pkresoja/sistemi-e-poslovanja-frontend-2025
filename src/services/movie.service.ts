@@ -1,3 +1,4 @@
+import type { SearchModel } from "@/models/search.model";
 import axios from "axios";
 
 const client = axios.create({
@@ -11,8 +12,11 @@ const client = axios.create({
 })
 
 export class MovieService {
-    static async getMovies() {
-        return await client.get('/movie')
+    static async getMovies(search: SearchModel | null = null) {
+        return await client.request({
+            url: '/movie',
+            params: search
+        })
     }
 
     static async getMovieByShortUrl(short: string) {
@@ -21,5 +25,13 @@ export class MovieService {
 
     static async getActors() {
         return await client.get('/actor')
+    }
+
+    static async getGenres() {
+        return await client.get('/genre')
+    }
+
+    static async getDirectors() {
+        return await client.get('/director')
     }
 }
