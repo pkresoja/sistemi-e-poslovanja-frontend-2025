@@ -3,6 +3,7 @@ import HomeView from '../views/HomeView.vue'
 import AboutView from '@/views/AboutView.vue'
 import MovieView from '@/views/MovieView.vue'
 import ListView from '@/views/ListView.vue'
+import CinemaView from '@/views/CinemaView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -37,6 +38,14 @@ const router = createRouter({
       component: ListView,
       meta: {
         title: 'Lista'
+      }
+    },
+    {
+      path: '/cinema',
+      name: 'cinema',
+      component: CinemaView,
+      meta: {
+        title: 'Bioskopi'
       }
     },
     {

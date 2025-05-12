@@ -23,7 +23,12 @@ const year = new Date().getFullYear()
             </li>
             <li class="nav-item">
               <RouterLink class="nav-link" to="/list" exact-active-class="active">
-                List
+                Lista
+              </RouterLink>
+            </li>
+            <li class="nav-item">
+              <RouterLink class="nav-link" to="/cinema" exact-active-class="active">
+                Bioskopi
               </RouterLink>
             </li>
             <li class="nav-item">
