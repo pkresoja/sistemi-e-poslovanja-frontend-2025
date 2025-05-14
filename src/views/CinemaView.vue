@@ -5,9 +5,11 @@ import { formatDate } from '@/utils';
 import { ref } from 'vue';
 
 const cinemas = ref<CinemaModel[]>()
-CinemaService.getCinemas().then(rsp => {
-    cinemas.value = rsp.data
-})
+CinemaService.getCinemas()
+    .then(rsp => {
+        cinemas.value = rsp.data
+    })
+    .catch((e) => console.log('Idi na login'))
 
 function deleteCinema(id: number) {
     CinemaService.deleteCinemaById(id)
