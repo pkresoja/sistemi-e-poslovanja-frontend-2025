@@ -57,15 +57,13 @@ export async function useAxios(url: string, method: 'get' | 'post' | 'put' | 'de
     }
 }
 
-export async function login(inputEmail: string, password: string) {
+export async function login(email: string, password: string) {
     const response = await axios.post('http://localhost:3000/api/user/login', {
-        email: inputEmail,
+        email,
         password
     })
 
-    const { access, refresh, email } = response.data
-    setTokens(access, refresh, email)
-
+    setTokens(response.data)
     return response.data
 }
 
@@ -94,9 +92,8 @@ async function refreshAccessToken() {
             }
         })
 
-        const { access, email } = rsp.data
-        setTokens(access, refreshToken, email)
-        return access
+        setTokens(rsp.data)
+        return rsp.data.access
 
     } catch (error) {
         clearTokens()

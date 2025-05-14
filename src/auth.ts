@@ -1,11 +1,13 @@
+import type { AuthModel } from "./models/auth.model"
+
 const ACCESS_TOKEN_KEY = 'access_token'
 const REFRESH_TOKEN_KEY = 'refresh_token'
 const EMAIL_KEY = 'email'
 
-export function setTokens(access: string, refresh: string, email: string) {
-    localStorage.setItem(ACCESS_TOKEN_KEY, access)
-    localStorage.setItem(REFRESH_TOKEN_KEY, refresh)
-    localStorage.setItem(EMAIL_KEY, email)
+export function setTokens(auth: AuthModel) {
+    localStorage.setItem(ACCESS_TOKEN_KEY, auth.access)
+    localStorage.setItem(REFRESH_TOKEN_KEY, auth.refresh)
+    localStorage.setItem(EMAIL_KEY, auth.email)
 }
 
 export function getAccessToken() {
