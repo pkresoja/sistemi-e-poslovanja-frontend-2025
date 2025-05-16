@@ -71,7 +71,7 @@ function doRegister() {
             </div>
             <div class="mb-3" v-if="genres">
                 <label for="genre" class="form-label">Omiljeni žanr:</label>
-                <select class="form-select" id="genre">
+                <select class="form-select" id="genre" v-model="genreId">
                     <option v-for="g of genres" :value="g.genreId">{{ g.name }}</option>
                 </select>
             </div>
