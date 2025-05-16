@@ -36,12 +36,17 @@ function doLogin() {
                 <input type="email" class="form-control" id="email" v-model="email">
             </div>
             <div class="mb-3">
-                <label for="password" class="form-label">Password:</label>
-                <input type="password" class="form-control" id="location" v-model="password">
+                <label for="password" class="form-label">Lozinka:</label>
+                <input type="password" class="form-control" id="password" v-model="password">
             </div>
-            <button type="submit" class="btn btn-primary">
-                <i class="fa-solid fa-arrow-up-right-from-square"></i> Prijavi se
-            </button>
+            <div class="btn-group">
+                <button type="submit" class="btn btn-primary">
+                    <i class="fa-solid fa-arrow-up-right-from-square"></i> Prijavi se
+                </button>
+                <RouterLink class="btn btn-outline-secondary" to="/register">
+                    <i class="fa-solid fa-user-plus"></i> Napravi novi nalog
+                </RouterLink>
+            </div>
         </form>
     </div>
 </template>

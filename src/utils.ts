@@ -1,5 +1,6 @@
 import axios, { type AxiosRequestConfig } from "axios";
 import { clearTokens, getAccessToken, getRefreshToken, setTokens } from "./auth";
+import type { UserModel } from "./models/user.model";
 
 export async function useAxios(url: string, method: 'get' | 'post' | 'put' | 'delete' = 'get', data: any = {}, retry = true) {
     // return await axios.request({
@@ -64,6 +65,10 @@ export async function login(email: string, password: string) {
             password
         }
     )
+}
+
+export async function register(model: UserModel) {
+    return await axios.post('http://localhost:3000/api/user/register', model)
 }
 
 export function formatDate(iso: string) {

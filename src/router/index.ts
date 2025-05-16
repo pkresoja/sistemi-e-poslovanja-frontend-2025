@@ -7,6 +7,7 @@ import EditCinema from '@/views/cinema/EditCinema.vue'
 import NewCinema from '@/views/cinema/NewCinema.vue'
 import LoginView from '@/views/user/LoginView.vue'
 import UserView from '@/views/user/UserView.vue'
+import RegisterView from '@/views/user/RegisterView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -25,6 +26,14 @@ const router = createRouter({
       component: LoginView,
       meta: {
         title: 'Prijava'
+      }
+    },
+    {
+      path: '/register',
+      name: 'register',
+      component: RegisterView,
+      meta: {
+        title: 'Registracija'
       }
     },
     {

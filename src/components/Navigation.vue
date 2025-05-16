@@ -55,6 +55,11 @@ const logout = useLogout()
                                 Prijavi se
                             </RouterLink>
                         </li>
+                        <li class="nav-item">
+                            <RouterLink class="nav-link" to="/register" exact-active-class="active">
+                                Registruj se
+                            </RouterLink>
+                        </li>
                     </template>
                 </ul>
                 <span class="navbar-text" v-if="getRefreshToken()">
