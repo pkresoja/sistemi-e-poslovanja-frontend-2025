@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import Navigation from '@/components/Navigation.vue';
 import { useLogout } from '@/hooks/logout.hook';
+import type { BookmarkModel } from '@/models/bookmark.model';
 import type { UserModel } from '@/models/user.model';
 import { formatDate, useAxios } from '@/utils';
 import { ref } from 'vue';
@@ -10,6 +11,19 @@ const logout = useLogout()
 useAxios('/user/self')
     .then(rsp => user.value = rsp.data)
     .catch(e => logout())
+
+function deleteBookmark(model: BookmarkModel) {
+    if (!confirm(`Obrisi sačuvan film ${model.movie.title}?`)) return
+
+    useAxios(`/bookmark/${model.bookmarkId}`, 'delete')
+    .then(rsp => {
+        if (user.value == null) return
+        user.value!.bookmarks = user.value?.bookmarks.filter(b=>
+            b.bookmarkId !== model.bookmarkId
+        )
+    })
+    .catch(e => logout())
+}
 </script>
 
 <template>
@@ -67,7 +81,7 @@ useAxios('/user/self')
                                 <RouterLink :to="`/movie/${b.movieId}`" class="btn btn-sm btn-primary">
                                     <i class="fa-solid fa-arrow-up-right-from-square"></i>
                                 </RouterLink>
-                                <button type="button" class="btn btn-sm btn-danger">
+                                <button type="button" class="btn btn-sm btn-danger" @click="deleteBookmark(b)">
                                     <i class="fa-solid fa-trash-can"></i>
                                 </button>
                             </div>
