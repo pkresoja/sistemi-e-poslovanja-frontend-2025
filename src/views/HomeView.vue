@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import Navigation from '@/components/Navigation.vue';
 import type { ActorModel } from '@/models/actor.model';
 import type { DirectorModel } from '@/models/director.model';
 import type { GenreModel } from '@/models/genre.model';
@@ -35,6 +36,7 @@ loadMovies()
 </script>
 
 <template>
+    <Navigation/>
     <h1>Praktikum Sistemi E-Poslovanja</h1>
     <div class="row">
         <div class="col-12 col-md-4 mb-3" v-if="actors">

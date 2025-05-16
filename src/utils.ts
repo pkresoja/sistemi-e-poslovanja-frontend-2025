@@ -58,13 +58,12 @@ export async function useAxios(url: string, method: 'get' | 'post' | 'put' | 'de
 }
 
 export async function login(email: string, password: string) {
-    const response = await axios.post('http://localhost:3000/api/user/login', {
-        email,
-        password
-    })
-
-    setTokens(response.data)
-    return response.data
+    return await axios.post('http://localhost:3000/api/user/login',
+        {
+            email,
+            password
+        }
+    )
 }
 
 export function formatDate(iso: string) {
