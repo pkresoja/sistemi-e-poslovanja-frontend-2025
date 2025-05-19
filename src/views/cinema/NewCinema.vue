@@ -39,10 +39,11 @@ function save() {
                     <RouterLink to="/cinema">Bioskopi</RouterLink>
                 </li>
                 <li class="breadcrumb-item active" aria-current="page">
-                    Novi Bioskop
+                    Dodaj
                 </li>
             </ol>
         </nav>
+        <h1>Dodaj Bioskop</h1>
         <form v-on:submit.prevent="save">
             <div class="mb-3">
                 <label for="name" class="form-label">Naziv:</label>

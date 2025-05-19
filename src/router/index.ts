@@ -8,6 +8,9 @@ import NewCinema from '@/views/cinema/NewCinema.vue'
 import LoginView from '@/views/user/LoginView.vue'
 import UserView from '@/views/user/UserView.vue'
 import RegisterView from '@/views/user/RegisterView.vue'
+import HallView from '@/views/hall/HallView.vue'
+import EditHall from '@/views/hall/EditHall.vue'
+import NewHall from '@/views/hall/NewHall.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -77,11 +80,35 @@ const router = createRouter({
       }
     },
     {
+      path: '/cinema/:id/hall',
+      name: 'hall',
+      component: HallView,
+      meta: {
+        title: 'Sale'
+      }
+    },
+    {
       path: '/cinema/:id',
       name: 'edit-cinema',
       component: EditCinema,
       meta: {
         title: 'Izmeni Bioskop'
+      }
+    },
+    {
+      path: '/hall/new',
+      name: 'new-hall',
+      component: NewHall,
+      meta: {
+        title: 'Dodaj Salu'
+      }
+    },
+    {
+      path: '/hall/:id',
+      name: 'edit-hall',
+      component: EditHall,
+      meta: {
+        title: 'Izmeni Salu'
       }
     },
     {

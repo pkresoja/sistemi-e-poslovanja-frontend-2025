@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import Loading from '@/components/Loading.vue';
 import Navigation from '@/components/Navigation.vue';
 import { useLogout } from '@/hooks/logout.hook';
 import type { BookmarkModel } from '@/models/bookmark.model';
@@ -16,13 +17,13 @@ function deleteBookmark(model: BookmarkModel) {
     if (!confirm(`Obrisi sačuvan film ${model.movie.title}?`)) return
 
     useAxios(`/bookmark/${model.bookmarkId}`, 'delete')
-    .then(rsp => {
-        if (user.value == null) return
-        user.value!.bookmarks = user.value?.bookmarks.filter(b=>
-            b.bookmarkId !== model.bookmarkId
-        )
-    })
-    .catch(e => logout())
+        .then(rsp => {
+            if (user.value == null) return
+            user.value!.bookmarks = user.value?.bookmarks.filter(b =>
+                b.bookmarkId !== model.bookmarkId
+            )
+        })
+        .catch(e => logout())
 }
 </script>
 
@@ -69,7 +70,7 @@ function deleteBookmark(model: BookmarkModel) {
                     </tr>
                 </thead>
                 <tbody>
-                    <tr v-for="b of user.bookmarks">
+                    <tr v-if="user.bookmarks.length > 0" v-for="b of user.bookmarks">
                         <th scope="row">{{ b.bookmarkId }}</th>
                         <td>{{ b.movie.title }}</td>
                         <td>{{ b.movie.movieGenres[0].genre.name }}</td>
@@ -87,6 +88,9 @@ function deleteBookmark(model: BookmarkModel) {
                             </div>
                         </td>
                     </tr>
+                    <tr v-else>
+                        <td colspan="7">Nemate sačuvanih filmova</td>
+                    </tr>
                 </tbody>
             </table>
         </div>
@@ -99,4 +103,5 @@ function deleteBookmark(model: BookmarkModel) {
             </ul>
         </div>
     </div>
+    <Loading v-else />
 </template>

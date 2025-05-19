@@ -1,12 +1,16 @@
 <script setup lang="ts">
+import { getRefreshToken } from '@/auth';
+import Loading from '@/components/Loading.vue';
 import Navigation from '@/components/Navigation.vue';
 import type { ActorModel } from '@/models/actor.model';
 import type { DirectorModel } from '@/models/director.model';
 import type { GenreModel } from '@/models/genre.model';
 import type { MovieModel } from '@/models/movie.model';
 import type { SearchModel } from '@/models/search.model';
+import { BookmarkService } from '@/services/bookmark.service';
 import { MovieService } from '@/services/movie.service';
 import { ref } from 'vue';
+import { useRouter } from 'vue-router';
 
 const actors = ref<ActorModel[]>()
 const genres = ref<GenreModel[]>()
@@ -32,11 +36,19 @@ function loadMovies() {
         .then(rsp => movies.value = rsp.data)
 }
 
+const router = useRouter()
+function addBookmark(movie: MovieModel) {
+    if (!confirm(`Dodaj ${movie.title} u sačuvane?`)) return
+    BookmarkService.createBookmark(movie.movieId)
+        .then(rsp => router.push('/user'))
+        .catch(e => alert(e.message))
+}
+
 loadMovies()
 </script>
 
 <template>
-    <Navigation/>
+    <Navigation />
     <h1>Praktikum Sistemi E-Poslovanja</h1>
     <div class="row">
         <div class="col-12 col-md-4 mb-3" v-if="actors">
@@ -67,18 +79,22 @@ loadMovies()
                 <p class="card-text">{{ m.shortDescription }}</p>
             </div>
             <div class="card-footer">
-                <RouterLink :to="`/movie/${m.shortUrl}`" class="btn btn-sm btn-outline-primary">
-                    <i class="fa-solid fa-arrow-up-right-from-square"></i> Details
-                </RouterLink>
+                <div class="btn-group">
+                    <RouterLink :to="`/movie/${m.shortUrl}`" class="btn btn-sm btn-outline-primary">
+                        <i class="fa-solid fa-arrow-up-right-from-square"></i> Detalji
+                    </RouterLink>
+                    <button type="button" class="btn btn-sm btn-outline-secondary" v-if="getRefreshToken()"
+                        @click="addBookmark(m)">
+                        <i class="fa-solid fa-bookmark"></i> Sačuvaj
+                    </button>
+                </div>
             </div>
         </div>
     </div>
     <div class="text-center" v-else-if="movies">
         Nije pronađen ni jedan film po zadatom kriterijumu!
     </div>
-    <div class="text-center" v-else>
-        Podaci se učitavaju...
-    </div>
+    <Loading v-else />
 </template>
 
 <style>

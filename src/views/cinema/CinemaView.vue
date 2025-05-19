@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import Loading from '@/components/Loading.vue';
 import Navigation from '@/components/Navigation.vue';
 import { useLogout } from '@/hooks/logout.hook';
 import type { CinemaModel } from '@/models/cinema.model';
@@ -15,10 +16,11 @@ CinemaService.getCinemas()
     })
     .catch((e) => logout())
 
-function deleteCinema(id: number) {
-    CinemaService.deleteCinemaById(id)
+function deleteCinema(cinema: CinemaModel) {
+    if (!confirm(`Obrisati bioskop ${cinema.name}?`)) return
+    CinemaService.deleteCinemaById(cinema.cinemaId)
         .then(rsp => {
-            cinemas.value = cinemas.value?.filter(c => c.cinemaId !== id)
+            cinemas.value = cinemas.value?.filter(c => c.cinemaId !== cinema.cinemaId)
         })
         .catch((e) => logout())
 }
@@ -26,6 +28,16 @@ function deleteCinema(id: number) {
 
 <template>
     <Navigation />
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+                <RouterLink to="/">Početna</RouterLink>
+            </li>
+            <li class="breadcrumb-item active" aria-current="page">
+                Bioskopi
+            </li>
+        </ol>
+    </nav>
     <h1>Bioskopi</h1>
     <RouterLink to="/cinema/new" class="btn btn-primary">
         + Dodaj Bioskop
@@ -48,10 +60,13 @@ function deleteCinema(id: number) {
                 <td>{{ formatDate(c.updatedAt ?? c.createdAt) }}</td>
                 <td>
                     <div class="btn-group">
-                        <RouterLink :to="`/cinema/${c.cinemaId}`" class="btn btn-sm btn-success">
+                        <RouterLink :to="`/cinema/${c.cinemaId}/hall`" class="btn btn-sm btn-primary" title="Sale">
+                            <i class="fa-solid fa-list"></i>
+                        </RouterLink>
+                        <RouterLink :to="`/cinema/${c.cinemaId}`" class="btn btn-sm btn-success" title="Izmeni">
                             <i class="fa-solid fa-pen-to-square"></i>
                         </RouterLink>
-                        <button type="button" class="btn btn-sm btn-danger" @click="deleteCinema(c.cinemaId)">
+                        <button type="button" class="btn btn-sm btn-danger" @click="deleteCinema(c)" title="Ukloni">
                             <i class="fa-solid fa-trash-can"></i>
                         </button>
                     </div>
@@ -59,4 +74,5 @@ function deleteCinema(id: number) {
             </tr>
         </tbody>
     </table>
+    <Loading v-else />
 </template>

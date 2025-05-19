@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import Loading from '@/components/Loading.vue';
 import Navigation from '@/components/Navigation.vue';
 import { useLogout } from '@/hooks/logout.hook';
 import type { CinemaModel } from '@/models/cinema.model';
@@ -39,10 +40,11 @@ function save() {
                     <RouterLink to="/cinema">Bioskopi</RouterLink>
                 </li>
                 <li class="breadcrumb-item active" aria-current="page">
-                    {{ cinema.name }}
+                    Izmeni
                 </li>
             </ol>
         </nav>
+        <h1>Izmeni Bioskop</h1>
         <form v-on:submit.prevent="save">
             <div class="mb-3">
                 <label for="name" class="form-label">Naziv:</label>
@@ -62,4 +64,5 @@ function save() {
             </button>
         </form>
     </div>
+    <Loading v-else />
 </template>
