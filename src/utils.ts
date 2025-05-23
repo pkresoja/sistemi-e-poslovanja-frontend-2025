@@ -74,7 +74,8 @@ export async function register(model: any) {
     return await axios.post('http://localhost:3000/api/user/register', model)
 }
 
-export function formatDate(iso: string) {
+export function formatDate(iso: string | null) {
+    if (iso == null) return 'N/A'
     return new Date(iso).toLocaleString('sr-RS', {
         day: '2-digit',
         month: '2-digit',

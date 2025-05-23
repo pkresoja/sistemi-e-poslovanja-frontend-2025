@@ -47,6 +47,11 @@ MovieService.getMovieByShortUrl(short)
                         </tr>
                     </tbody>
                 </table>
+                <div class="mb-3">
+                    <RouterLink class="btn btn-primary" :to="`/movie/${short}/reservation`">
+                        <i class="fa-solid fa-ticket"></i> Rezerviši
+                    </RouterLink>
+                </div>
             </div>
             <div class="col-12 col-md-3">
                 <img :src="movie.poster" :alt="movie.title" class="img-fluid">

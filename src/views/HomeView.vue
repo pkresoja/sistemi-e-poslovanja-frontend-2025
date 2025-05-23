@@ -80,10 +80,10 @@ loadMovies()
             </div>
             <div class="card-footer">
                 <div class="btn-group">
-                    <RouterLink :to="`/movie/${m.shortUrl}`" class="btn btn-sm btn-outline-primary">
+                    <RouterLink :to="`/movie/${m.shortUrl}`" class="btn btn-sm btn-primary">
                         <i class="fa-solid fa-arrow-up-right-from-square"></i> Detalji
                     </RouterLink>
-                    <button type="button" class="btn btn-sm btn-outline-secondary" v-if="getRefreshToken()"
+                    <button type="button" class="btn btn-sm btn-secondary" v-if="getRefreshToken()"
                         @click="addBookmark(m)">
                         <i class="fa-solid fa-bookmark"></i> Sačuvaj
                     </button>
