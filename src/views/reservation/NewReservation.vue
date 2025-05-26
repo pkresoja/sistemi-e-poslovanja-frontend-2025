@@ -5,7 +5,7 @@ import YesNo from '@/components/YesNo.vue';
 import { useLogout } from '@/hooks/logout.hook';
 import type { CinemaModel } from '@/models/cinema.model';
 import type { HallModel } from '@/models/hall.model';
-import type { MovieModel } from '@/models/movie.model';
+import type { OptionsModel } from '@/models/options.model';
 import type { ProjectionModel } from '@/models/projection.model';
 import { ReservationService } from '@/services/reservation.service';
 import { formatDate } from '@/utils';
@@ -17,7 +17,7 @@ const router = useRouter()
 const logout = useLogout()
 const link = String(route.params.link)
 
-const options = ref<{ movie: MovieModel, projections: ProjectionModel[] }>()
+const options = ref<OptionsModel>()
 ReservationService.getReservationOptionsByMovieShortUrl(link)
     .then(rsp => options.value = rsp.data)
     .catch(e => logout())

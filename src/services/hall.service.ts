@@ -1,32 +1,33 @@
-import { useAxios } from "@/utils";
+import type { HallModel } from "@/models/hall.model"
+import { UserService } from "./user.service"
 
 export class HallService {
 
     static async getHalls() {
-        return await useAxios('/hall')
+        return await UserService.useAxios<HallModel[]>('/hall')
     }
 
     static async getHallsByCinemaId(id: number) {
-        return await useAxios(`/cinema/${id}/hall`)
+        return await UserService.useAxios<HallModel[]>(`/cinema/${id}/hall`)
     }
 
     static async getHallById(id: number) {
-        return await useAxios(`/hall/${id}`)
+        return await UserService.useAxios<HallModel>(`/hall/${id}`)
     }
 
     static async getExpandedHallById(id: number) {
-        return await useAxios(`/hall/${id}/expanded`)
+        return await UserService.useAxios<HallModel>(`/hall/${id}/expanded`)
     }
 
     static async createHall(model: any) {
-        return await useAxios('/hall', 'post', model)
+        return await UserService.useAxios('/hall', 'post', model)
     }
 
     static async updateHall(id: number, model: any) {
-        return await useAxios(`/hall/${id}`, 'put', model)
+        return await UserService.useAxios(`/hall/${id}`, 'put', model)
     }
 
     static async deleteHall(id: number) {
-        return await useAxios(`/hall/${id}`, 'delete')
+        return await UserService.useAxios(`/hall/${id}`, 'delete')
     }
 }

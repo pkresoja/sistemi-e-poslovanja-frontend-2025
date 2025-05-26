@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { getRefreshToken } from '@/auth';
+import { getRefreshToken } from '@/services/auth.service';
 import Loading from '@/components/Loading.vue';
 import Navigation from '@/components/Navigation.vue';
 import type { ActorModel } from '@/models/actor.model';

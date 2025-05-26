@@ -3,11 +3,9 @@ import Loading from '@/components/Loading.vue';
 import Navigation from '@/components/Navigation.vue';
 import { useLogout } from '@/hooks/logout.hook';
 import type { CinemaModel } from '@/models/cinema.model';
-import type { HallModel } from '@/models/hall.model';
 import { CinemaService } from '@/services/cinema.service';
 import { HallService } from '@/services/hall.service';
-import { formatDate } from '@/utils';
-import { onMounted, ref } from 'vue';
+import { ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 
 const route = useRoute()

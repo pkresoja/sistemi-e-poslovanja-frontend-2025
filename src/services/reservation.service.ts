@@ -1,16 +1,32 @@
-import { useAxios } from "@/utils";
+import type { ReservationModel } from "@/models/reservation.model"
+import { UserService } from "./user.service"
+import type { OptionsModel } from "@/models/options.model"
 
 export class ReservationService {
 
     static async getReservations() {
-        return await useAxios('/reservation')
+        return await UserService.useAxios<ReservationModel[]>('/reservation')
+    }
+
+    static async getReservationById(id: number) {
+        return await UserService.useAxios<ReservationModel>(`/reservation/${id}`)
     }
 
     static async getReservationOptionsByMovieShortUrl(link: string) {
-        return await useAxios('/projection/movie/' + link)
+        return await UserService.useAxios<OptionsModel>('/projection/movie/short/' + link)
     }
 
     static async createReservation(model: any) {
-        return await useAxios('/reservation', 'post', model)
+        return await UserService.useAxios('/reservation', 'post', model)
+    }
+
+    static async updateReservation(id: number, projectionId: number, numOfSeats: number) {
+        return await UserService.useAxios(`/reservation/${id}`, 'put', {
+            projectionId, numOfSeats
+        })
+    }
+
+    static async deleteReservation(id: number) {
+        return await UserService.useAxios(`/reservation/${id}`, 'delete')
     }
 }

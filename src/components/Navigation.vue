@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { getRefreshToken, getUserEmail } from '@/auth';
+import { AuthService } from '@/services/auth.service';
 import { useLogout } from '@/hooks/logout.hook';
 
 const logout = useLogout()
@@ -28,7 +28,7 @@ const logout = useLogout()
                             Lista
                         </RouterLink>
                     </li>
-                    <template v-if="getRefreshToken()">
+                    <template v-if="AuthService.getRefreshToken()">
                         <li class="nav-item">
                             <RouterLink class="nav-link" to="/cinema" exact-active-class="active">
                                 Bioskopi
@@ -65,8 +65,8 @@ const logout = useLogout()
                         </li>
                     </template>
                 </ul>
-                <span class="navbar-text" v-if="getRefreshToken()">
-                    <i class="fa-solid fa-user"></i> {{ getUserEmail() }}
+                <span class="navbar-text" v-if="AuthService.getRefreshToken()">
+                    <i class="fa-solid fa-user"></i> {{ AuthService.getUserEmail() }}
                 </span>
             </div>
         </div>

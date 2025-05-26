@@ -2,8 +2,9 @@ import type { ProjectionModel } from "./projection.model"
 
 export interface ReservationModel {
     reservationId: number
-    projectionid: number
+    projectionId: number
     projection: ProjectionModel
+    numOfSeats: number
     watchedAt: null | string
     rating: null | number
     comment: null | string

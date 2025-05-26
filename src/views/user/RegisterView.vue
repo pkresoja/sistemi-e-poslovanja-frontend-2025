@@ -2,7 +2,7 @@
 import Navigation from '@/components/Navigation.vue';
 import type { GenreModel } from '@/models/genre.model';
 import { MovieService } from '@/services/movie.service';
-import { register } from '@/utils';
+import { UserService } from '@/services/user.service';
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 
@@ -35,7 +35,7 @@ function doRegister() {
         return
     }
 
-    register({
+    UserService.register({
         firstName: firstName.value,
         lastName: lastName.value,
         genreId: genreId.value,
@@ -43,8 +43,8 @@ function doRegister() {
         phone: phone.value,
         password: password.value
     })
-    .then(rsp=>router.push('/login'))
-    .catch(e=>alert('Registracija neuspesna'))
+        .then(rsp => router.push('/login'))
+        .catch(e => alert('Registracija neuspesna'))
 }
 </script>
 

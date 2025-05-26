@@ -16,6 +16,7 @@ import EditProjection from '@/views/projection/EditProjection.vue'
 import NewProjection from '@/views/projection/NewProjection.vue'
 import NewReservation from '@/views/reservation/NewReservation.vue'
 import ReservationView from '@/views/reservation/ReservationView.vue'
+import EditReservation from '@/views/reservation/EditReservation.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -50,6 +51,14 @@ const router = createRouter({
       component: UserView,
       meta: {
         title: 'Korisnik'
+      }
+    },
+    {
+      path: '/reservation/:id',
+      name: 'edit-reservation',
+      component: EditReservation,
+      meta: {
+        title: 'Izmeni Rezervaciju'
       }
     },
     {

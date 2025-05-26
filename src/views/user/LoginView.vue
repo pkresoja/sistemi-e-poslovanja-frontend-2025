@@ -1,9 +1,9 @@
 <script lang="ts" setup>
-import { setTokens } from '@/auth';
+import { AuthService } from '@/services/auth.service';
 import Navigation from '@/components/Navigation.vue';
-import { login } from '@/utils';
 import { ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
+import { UserService } from '@/services/user.service';
 
 const email = ref<string>('')
 const password = ref<string>('')
@@ -12,9 +12,9 @@ const router = useRouter()
 
 function doLogin() {
     if (email.value == '' || password.value == '') return
-    login(email.value, password.value)
+    UserService.login(email.value, password.value)
         .then(rsp => {
-            setTokens(rsp.data)
+            AuthService.setTokens(rsp.data)
             if (route.query.r) {
                 router.push(route.query.r as string)
                 return

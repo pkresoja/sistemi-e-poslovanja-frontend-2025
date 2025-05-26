@@ -8,7 +8,8 @@ import axios from "axios";
 const client = axios.create({
     baseURL: 'https://movie.pequla.com/api',
     headers: {
-        'Accept': 'application/json'
+        'Accept': 'application/json',
+        'X-Name': 'PSEP_2025'
     },
     validateStatus: (status: number) => {
         return status === 200

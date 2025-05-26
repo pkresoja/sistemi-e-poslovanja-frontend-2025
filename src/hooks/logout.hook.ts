@@ -1,11 +1,11 @@
-import { clearTokens } from "@/auth"
+import { AuthService } from "@/services/auth.service"
 import { useRouter } from "vue-router"
 
 export function useLogout() {
     const router = useRouter()
 
     const logout = () => {
-        clearTokens()
+        AuthService.clearTokens()
         router.push('/login')
     }
 

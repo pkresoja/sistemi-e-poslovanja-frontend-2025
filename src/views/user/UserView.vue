@@ -4,19 +4,21 @@ import Navigation from '@/components/Navigation.vue';
 import { useLogout } from '@/hooks/logout.hook';
 import type { BookmarkModel } from '@/models/bookmark.model';
 import type { UserModel } from '@/models/user.model';
-import { formatDate, useAxios } from '@/utils';
+import { BookmarkService } from '@/services/bookmark.service';
+import { UserService } from '@/services/user.service';
+import { formatDate } from '@/utils';
 import { ref } from 'vue';
 
 const user = ref<UserModel>()
 const logout = useLogout()
-useAxios('/user/self')
+UserService.getSelfUser()
     .then(rsp => user.value = rsp.data)
     .catch(e => logout())
 
 function deleteBookmark(model: BookmarkModel) {
     if (!confirm(`Obrisi sačuvan film ${model.movie.title}?`)) return
 
-    useAxios(`/bookmark/${model.bookmarkId}`, 'delete')
+    BookmarkService.deleteBookmark(model.bookmarkId)
         .then(rsp => {
             if (user.value == null) return
             user.value!.bookmarks = user.value?.bookmarks.filter(b =>
@@ -82,7 +84,8 @@ function deleteBookmark(model: BookmarkModel) {
                                 <RouterLink :to="`/movie/${b.movie.shortUrl}`" class="btn btn-sm btn-primary">
                                     <i class="fa-solid fa-arrow-up-right-from-square"></i>
                                 </RouterLink>
-                                <RouterLink :to="`/movie/${b.movie.shortUrl}/reservation`" class="btn btn-sm btn-success">
+                                <RouterLink :to="`/movie/${b.movie.shortUrl}/reservation`"
+                                    class="btn btn-sm btn-success">
                                     <i class="fa-solid fa-ticket"></i>
                                 </RouterLink>
                                 <button type="button" class="btn btn-sm btn-danger" @click="deleteBookmark(b)">
