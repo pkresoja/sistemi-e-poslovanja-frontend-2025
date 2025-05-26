@@ -4,7 +4,7 @@ import Navigation from '@/components/Navigation.vue';
 import { useLogout } from '@/hooks/logout.hook';
 import type { CinemaModel } from '@/models/cinema.model';
 import { CinemaService } from '@/services/cinema.service';
-import { formatDate } from '@/utils';
+import { formatDate, showConfirm } from '@/utils';
 import { ref } from 'vue';
 
 const cinemas = ref<CinemaModel[]>()
@@ -14,15 +14,16 @@ CinemaService.getCinemas()
     .then(rsp => {
         cinemas.value = rsp.data
     })
-    .catch((e) => logout())
+    .catch((e) => logout(e))
 
 function deleteCinema(cinema: CinemaModel) {
-    if (!confirm(`Obrisati bioskop ${cinema.name}?`)) return
-    CinemaService.deleteCinemaById(cinema.cinemaId)
-        .then(rsp => {
-            cinemas.value = cinemas.value?.filter(c => c.cinemaId !== cinema.cinemaId)
-        })
-        .catch((e) => logout())
+    showConfirm(`Obrisati bioskop ${cinema.name}?`, () => {
+        CinemaService.deleteCinemaById(cinema.cinemaId)
+            .then(rsp => {
+                cinemas.value = cinemas.value?.filter(c => c.cinemaId !== cinema.cinemaId)
+            })
+            .catch((e) => logout(e))
+    })
 }
 </script>
 

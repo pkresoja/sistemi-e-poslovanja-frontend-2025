@@ -16,7 +16,7 @@ const cinema = ref<CinemaModel>()
 
 CinemaService.getCinemaById(id)
     .then(rsp => cinema.value = rsp.data)
-    .catch((e) => logout())
+    .catch((e) => logout(e))
 
 function save() {
     if (cinema.value == null) return
@@ -24,7 +24,7 @@ function save() {
         .then(rsp => {
             router.push('/cinema')
         })
-        .catch((e) => logout())
+        .catch((e) => logout(e))
 }
 </script>
 

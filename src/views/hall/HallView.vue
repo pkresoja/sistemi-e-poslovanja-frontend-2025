@@ -5,7 +5,7 @@ import type { CinemaModel } from '@/models/cinema.model';
 import type { HallModel } from '@/models/hall.model';
 import { CinemaService } from '@/services/cinema.service';
 import { HallService } from '@/services/hall.service';
-import { formatDate } from '@/utils';
+import { formatDate, showConfirm } from '@/utils';
 import { ref } from 'vue';
 import { useRoute } from 'vue-router';
 import YesNo from '@/components/YesNo.vue'
@@ -18,20 +18,21 @@ const id = Number(route.params.id)
 const cinema = ref<CinemaModel>()
 CinemaService.getCinemaById(id)
     .then(rsp => cinema.value = rsp.data)
-    .catch(e => logout())
+    .catch(e => logout(e))
 
 const halls = ref<HallModel[]>()
 HallService.getHallsByCinemaId(id)
     .then(rsp => halls.value = rsp.data)
-    .catch(e => logout())
+    .catch(e => logout(e))
 
 function deleteHall(hall: HallModel) {
-    if (!confirm(`Obrisati salu ${hall.name}?`)) return
-    HallService.deleteHall(hall.hallId)
-        .then(rsp => {
-            halls.value = halls.value?.filter(h => h.hallId !== hall.hallId)
-        })
-        .catch(e => logout())
+    showConfirm(`Obrisati salu ${hall.name}?`, () => {
+        HallService.deleteHall(hall.hallId)
+            .then(rsp => {
+                halls.value = halls.value?.filter(h => h.hallId !== hall.hallId)
+            })
+            .catch(e => logout(e))
+    })
 }
 </script>
 

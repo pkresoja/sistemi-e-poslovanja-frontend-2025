@@ -35,14 +35,14 @@ async function loadData() {
         }
         halls.value = hallsResponse.data
     } catch (e) {
-        logout()
+        logout(e)
     }
 }
 
 function save() {
     ProjectionService.createProjection(projection.value)
         .then(rsp => router.push(`/hall/${projection.value.hallId}/projection`))
-        .catch(e => logout())
+        .catch(e => logout(e))
 }
 
 onMounted(() => loadData())

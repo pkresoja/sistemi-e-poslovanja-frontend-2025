@@ -29,12 +29,12 @@ CinemaService.getCinemas()
         }
         cinemas.value = rsp.data
     })
-    .catch(e => logout())
+    .catch(e => logout(e))
 
 function save() {
     HallService.createHall(hall.value)
         .then(rsp => router.push(`/cinema/${hall.value?.cinemaId}/hall`))
-        .catch(e => logout())
+        .catch(e => logout(e))
 }
 </script>
 

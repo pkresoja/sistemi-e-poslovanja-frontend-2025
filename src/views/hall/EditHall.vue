@@ -28,14 +28,14 @@ async function loadData() {
         cinemas.value = cinemasResponse.data
         cinema.value = cinemas.value?.find(c => c.cinemaId == hall.value?.cinemaId)
     } catch (e) {
-        logout()
+        logout(e)
     }
 }
 
 function save() {
     HallService.updateHall(id, hall.value)
         .then(rsp => router.push(`/cinema/${hall.value?.cinemaId}/hall`))
-        .catch(e => logout())
+        .catch(e => logout(e))
 }
 
 onMounted(() => loadData())

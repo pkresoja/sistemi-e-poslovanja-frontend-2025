@@ -1,31 +1,37 @@
 <script lang="ts" setup>
 import Loading from '@/components/Loading.vue';
 import Navigation from '@/components/Navigation.vue';
+import { useLogout } from '@/hooks/logout.hook';
 import type { HallModel } from '@/models/hall.model';
 import type { ProjectionModel } from '@/models/projection.model';
 import { HallService } from '@/services/hall.service';
 import { ProjectionService } from '@/services/projection.service';
-import { formatDate } from '@/utils';
+import { formatDate, showConfirm } from '@/utils';
 import { ref } from 'vue';
 import { useRoute } from 'vue-router';
 
 const route = useRoute()
+const logout = useLogout()
 const id = Number(route.params.id)
 
 const hall = ref<HallModel>()
 HallService.getExpandedHallById(id)
     .then(rsp => hall.value = rsp.data)
+    .catch(e => logout(e))
 
 const projections = ref<ProjectionModel[]>()
 ProjectionService.getProjectionsByHallId(id)
     .then(rsp => projections.value = rsp.data)
+    .catch(e => logout(e))
 
 function deleteProjection(model: ProjectionModel) {
-    if (!confirm(`Obrisati projekciju ${model.movie.title} u ${formatDate(model.time)}?`)) return
-    ProjectionService.deleteProjection(model.projectionId)
-        .then(rsp => {
-            projections.value = projections.value?.filter(p => p.projectionId !== model.projectionId)
-        })
+    showConfirm(`Obrisati projekciju ${model.movie.title} u ${formatDate(model.time)}?`, () => {
+        ProjectionService.deleteProjection(model.projectionId)
+            .then(rsp => {
+                projections.value = projections.value?.filter(p => p.projectionId !== model.projectionId)
+            })
+            .catch(e => logout(e))
+    })
 }
 </script>
 

@@ -4,7 +4,7 @@ import Navigation from '@/components/Navigation.vue';
 import { useLogout } from '@/hooks/logout.hook';
 import type { ReservationModel } from '@/models/reservation.model';
 import { ReservationService } from '@/services/reservation.service';
-import { formatDate } from '@/utils';
+import { formatDate, showConfirm } from '@/utils';
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 
@@ -14,15 +14,18 @@ const logout = useLogout()
 
 ReservationService.getReservations()
     .then(rsp => reservations.value = rsp.data)
-    .catch(e => logout())
+    .catch(e => logout(e))
 
 function deleteReservation(model: ReservationModel) {
-    if (!confirm(`Obrisati rezervaciju ${model.projection.movie.title} za ${formatDate(model.projection.time)}?`))
-        return
-
-    ReservationService.deleteReservation(model.reservationId)
-        .then(rsp => reservations.value = reservations.value?.filter(obj => obj.reservationId !== model.reservationId))
-        .catch(e => logout())
+    showConfirm(
+        `Obrisati rezervaciju ${model.projection.movie.title} za ${formatDate(model.projection.time)}?`,
+        () => {
+            ReservationService.deleteReservation(model.reservationId)
+                .then(rsp => {
+                    reservations.value = reservations.value?.filter(obj => obj.reservationId !== model.reservationId)
+                })
+                .catch(e => logout(e))
+        })
 }
 
 function isOutdated(model: ReservationModel) {

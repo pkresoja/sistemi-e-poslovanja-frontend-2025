@@ -3,7 +3,7 @@ import { AuthService } from "./auth.service";
 import type { UserModel } from "@/models/user.model";
 
 const client = axios.create({
-    baseURL: 'http://localhost:3000/api',
+    baseURL: '/api',
     headers: {
         'Accept': 'application/json'
     }
@@ -41,6 +41,7 @@ export class UserService {
                 url,
                 method,
                 headers: {
+                    'Accept': 'application/json',
                     'Authorization': accessToken ? `Bearer ${accessToken}` : ''
                 },
                 data,
@@ -81,8 +82,8 @@ export class UserService {
         if (!refreshToken) return null
 
         try {
-            const rsp = await axios.request({
-                url: 'http://localhost:3000/api/user/refresh',
+            const rsp = await client.request({
+                url: '/user/refresh',
                 method: 'post',
                 headers: {
                     'Accept': 'application/json',

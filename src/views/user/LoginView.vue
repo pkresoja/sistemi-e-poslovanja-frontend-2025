@@ -4,6 +4,7 @@ import Navigation from '@/components/Navigation.vue';
 import { ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { UserService } from '@/services/user.service';
+import { showError } from '@/utils';
 
 const email = ref<string>('')
 const password = ref<string>('')
@@ -22,7 +23,7 @@ function doLogin() {
 
             router.push('/cinema')
         })
-        .catch(e => alert('Login failed'))
+        .catch(e => showError('Neispravan mejl ili lozinka'))
 }
 </script>
 

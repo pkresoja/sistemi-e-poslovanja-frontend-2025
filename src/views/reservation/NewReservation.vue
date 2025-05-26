@@ -20,7 +20,7 @@ const link = String(route.params.link)
 const options = ref<OptionsModel>()
 ReservationService.getReservationOptionsByMovieShortUrl(link)
     .then(rsp => options.value = rsp.data)
-    .catch(e => logout())
+    .catch(e => logout(e))
 
 const selectedCinema = ref<Number>(0)
 const selectedHall = ref<Number>(0)
@@ -100,7 +100,7 @@ function makeReservation() {
 
     ReservationService.createReservation(reservation.value)
         .then(rsp => router.push('/reservation'))
-        .catch(e => logout())
+        .catch(e => logout(e))
 }
 </script>
 

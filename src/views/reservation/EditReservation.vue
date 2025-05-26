@@ -33,19 +33,19 @@ ReservationService.getReservationById(id)
         selectedProjection.value = rsp.data.projectionId
         reservation.value = rsp.data
     })
-    .catch(e => logout())
+    .catch(e => logout(e))
 
 const movies = ref<MovieModel[]>()
 MovieService.getMovies()
     .then(rsp => movies.value = rsp.data)
-    .catch(e => logout())
+    .catch(e => logout(e))
 
 
 const projections = ref<ProjectionModel[]>([])
 watch(selectedMovie, () => {
     ProjectionService.getProjectionsByMovieId(selectedMovie.value)
         .then(rsp => projections.value = rsp.data)
-        .catch(e => logout())
+        .catch(e => logout(e))
 })
 
 function getCinemas() {
@@ -116,7 +116,7 @@ function onHallChange() {
 function updateReservation() {
     ReservationService.updateReservation(id, selectedProjection.value, reservation.value!.numOfSeats)
     .then(rsp=>router.push('/reservation'))
-    .catch(e => logout())
+    .catch(e => logout(e))
 }
 </script>
 

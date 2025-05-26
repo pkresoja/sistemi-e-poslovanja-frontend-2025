@@ -38,7 +38,7 @@ async function loadData() {
         const hallsResponse = await HallService.getHallsByCinemaId(hall.value!.cinemaId)
         halls.value = hallsResponse.data
     } catch (e) {
-        logout()
+        logout(e)
     }
 }
 
@@ -46,7 +46,7 @@ function save() {
     projection.value!.time = time.value!
     ProjectionService.updateProjection(id, projection.value)
         .then(rsp => router.push(`/hall/${hall.value!.hallId}/projection`))
-        .catch(e => logout())
+        .catch(e => logout(e))
 }
 
 onMounted(() => loadData())

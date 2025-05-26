@@ -2,6 +2,7 @@
 import Navigation from '@/components/Navigation.vue';
 import { useLogout } from '@/hooks/logout.hook';
 import { CinemaService } from '@/services/cinema.service';
+import { showError } from '@/utils';
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 
@@ -15,7 +16,7 @@ const cinema = ref({
 function save() {
     if (cinema.value == null) return
     if (cinema.value.name == '' || cinema.value.location == '') {
-        alert('Polja ime i lokacija su obavezna!')
+        showError('Polja ime i lokacija su obavezna!')
         return
     }
 
@@ -23,7 +24,7 @@ function save() {
     .then(rsp => {
         router.push('/cinema')
     })
-    .catch((e) => logout())
+    .catch((e) => logout(e))
 }
 </script>
 

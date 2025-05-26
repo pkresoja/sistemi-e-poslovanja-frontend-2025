@@ -3,6 +3,7 @@ import Navigation from '@/components/Navigation.vue';
 import type { GenreModel } from '@/models/genre.model';
 import { MovieService } from '@/services/movie.service';
 import { UserService } from '@/services/user.service';
+import { showError } from '@/utils';
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 
@@ -31,7 +32,6 @@ function doRegister() {
     if (repeat.value == '') return
 
     if (password.value != repeat.value) {
-        alert(`${repeat.value} ${password.value}`)
         return
     }
 
@@ -44,7 +44,7 @@ function doRegister() {
         password: password.value
     })
         .then(rsp => router.push('/login'))
-        .catch(e => alert('Registracija neuspesna'))
+        .catch(e => showError('Registracija neuspesna'))
 }
 </script>
 

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { getRefreshToken } from '@/services/auth.service';
+import { AuthService } from '@/services/auth.service';
 import Loading from '@/components/Loading.vue';
 import Navigation from '@/components/Navigation.vue';
 import type { ActorModel } from '@/models/actor.model';
@@ -9,9 +9,13 @@ import type { MovieModel } from '@/models/movie.model';
 import type { SearchModel } from '@/models/search.model';
 import { BookmarkService } from '@/services/bookmark.service';
 import { MovieService } from '@/services/movie.service';
-import { ref } from 'vue';
+import { onMounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
+import { useLogout } from '@/hooks/logout.hook';
+import { showConfirm } from '@/utils';
+import type { BookmarkModel } from '@/models/bookmark.model';
 
+const logout = useLogout()
 const actors = ref<ActorModel[]>()
 const genres = ref<GenreModel[]>()
 const directors = ref<DirectorModel[]>()
@@ -38,13 +42,39 @@ function loadMovies() {
 
 const router = useRouter()
 function addBookmark(movie: MovieModel) {
-    if (!confirm(`Dodaj ${movie.title} u sačuvane?`)) return
-    BookmarkService.createBookmark(movie.movieId)
-        .then(rsp => router.push('/user'))
-        .catch(e => alert(e.message))
+    showConfirm(`Dodaj ${movie.title} u sačuvane?`, () => {
+        BookmarkService.createBookmark(movie.movieId)
+            .then(rsp => router.push('/user'))
+            .catch(e => logout(e))
+    })
 }
 
-loadMovies()
+function removeBookmark(model: MovieModel) {
+    // showConfirm(`Obrisi sačuvan film ${model.title}?`, () => {
+    //     const id = bookmarks.value?.map(b=>b.movieId).find(b=>model.movieId)
+    //     BookmarkService.deleteBookmark(model.bookmarkId)
+    //         .then(rsp => {
+    //             if (bookmarks.value == null) return
+    //             bookmarks.value = bookmarks.value.filter(b =>
+    //                 b.bookmarkId !== model.bookmarkId
+    //             )
+    //         })
+    // })
+}
+
+function bookmarked(model: MovieModel) {
+    return bookmarks.value?.map(b=>b.movieId).includes(model.movieId)
+}
+
+const bookmarks = ref<BookmarkModel[]>()
+onMounted(() => {
+    loadMovies()
+    if (AuthService.getRefreshToken()) {
+        BookmarkService.getBookmarks()
+            .then(rsp => bookmarks.value = rsp.data)
+    }
+})
+
 </script>
 
 <template>
@@ -83,10 +113,15 @@ loadMovies()
                     <RouterLink :to="`/movie/${m.shortUrl}`" class="btn btn-sm btn-primary">
                         <i class="fa-solid fa-arrow-up-right-from-square"></i> Detalji
                     </RouterLink>
-                    <button type="button" class="btn btn-sm btn-secondary" v-if="getRefreshToken()"
-                        @click="addBookmark(m)">
-                        <i class="fa-solid fa-bookmark"></i> Sačuvaj
-                    </button>
+                    <template v-if="bookmarks">
+                        <button type="button" class="btn btn-sm btn-success" @click="addBookmark(m)" v-if="!bookmarked(m)">
+                            <i class="fa-solid fa-bookmark"></i> Sačuvaj
+                        </button>
+                        <button type="button" class="btn btn-sm btn-danger" @click="removeBookmark(m)" v-else>
+                            <i class="fa-solid fa-bookmark"></i> Ukloni
+                        </button>
+                    </template>
+
                 </div>
             </div>
         </div>

@@ -6,26 +6,26 @@ import type { BookmarkModel } from '@/models/bookmark.model';
 import type { UserModel } from '@/models/user.model';
 import { BookmarkService } from '@/services/bookmark.service';
 import { UserService } from '@/services/user.service';
-import { formatDate } from '@/utils';
+import { formatDate, showConfirm } from '@/utils';
 import { ref } from 'vue';
 
 const user = ref<UserModel>()
 const logout = useLogout()
 UserService.getSelfUser()
     .then(rsp => user.value = rsp.data)
-    .catch(e => logout())
+    .catch(e => logout(e))
 
 function deleteBookmark(model: BookmarkModel) {
-    if (!confirm(`Obrisi sačuvan film ${model.movie.title}?`)) return
-
-    BookmarkService.deleteBookmark(model.bookmarkId)
-        .then(rsp => {
-            if (user.value == null) return
-            user.value!.bookmarks = user.value?.bookmarks.filter(b =>
-                b.bookmarkId !== model.bookmarkId
-            )
-        })
-        .catch(e => logout())
+    showConfirm(`Obrisi sačuvan film ${model.movie.title}?`, () => {
+        BookmarkService.deleteBookmark(model.bookmarkId)
+            .then(rsp => {
+                if (user.value == null) return
+                user.value!.bookmarks = user.value?.bookmarks.filter(b =>
+                    b.bookmarkId !== model.bookmarkId
+                )
+            })
+            .catch(e => logout(e))
+    })
 }
 </script>
 
