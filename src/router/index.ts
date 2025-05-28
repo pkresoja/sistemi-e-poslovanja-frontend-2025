@@ -17,6 +17,7 @@ import NewProjection from '@/views/projection/NewProjection.vue'
 import NewReservation from '@/views/reservation/NewReservation.vue'
 import ReservationView from '@/views/reservation/ReservationView.vue'
 import EditReservation from '@/views/reservation/EditReservation.vue'
+import ReservationDetails from '@/views/reservation/ReservationDetails.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -51,6 +52,14 @@ const router = createRouter({
       component: UserView,
       meta: {
         title: 'Korisnik'
+      }
+    },
+    {
+      path: '/reservation/:id/details',
+      name: 'details-reservation',
+      component: ReservationDetails,
+      meta: {
+        title: 'Detalji'
       }
     },
     {

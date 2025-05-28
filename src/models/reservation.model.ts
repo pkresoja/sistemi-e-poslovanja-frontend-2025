@@ -5,6 +5,8 @@ export interface ReservationModel {
     projectionId: number
     projection: ProjectionModel
     numOfSeats: number
+    paidAt: null | string
+    transactionId: null | number
     watchedAt: null | string
     rating: null | number
     comment: null | string

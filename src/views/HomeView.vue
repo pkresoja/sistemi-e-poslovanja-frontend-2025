@@ -50,16 +50,16 @@ function addBookmark(movie: MovieModel) {
 }
 
 function removeBookmark(model: MovieModel) {
-    // showConfirm(`Obrisi sačuvan film ${model.title}?`, () => {
-    //     const id = bookmarks.value?.map(b=>b.movieId).find(b=>model.movieId)
-    //     BookmarkService.deleteBookmark(model.bookmarkId)
-    //         .then(rsp => {
-    //             if (bookmarks.value == null) return
-    //             bookmarks.value = bookmarks.value.filter(b =>
-    //                 b.bookmarkId !== model.bookmarkId
-    //             )
-    //         })
-    // })
+    showConfirm(`Obrisi sačuvan film ${model.title}?`, () => {
+        const bookmark = bookmarks.value!.find(b=>b.movieId == model.movieId)
+        BookmarkService.deleteBookmark(bookmark!.bookmarkId)
+            .then(rsp => {
+                if (bookmarks.value == null) return
+                bookmarks.value = bookmarks.value.filter(b =>
+                    b.movieId!== model.movieId
+                )
+            })
+    })
 }
 
 function bookmarked(model: MovieModel) {

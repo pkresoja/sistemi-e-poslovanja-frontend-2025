@@ -18,7 +18,7 @@ export function toLocalDatetimeInputString(utcISOString: string) {
     return offsetDate.toISOString().slice(0, 16); // "YYYY-MM-DDTHH:MM"
 }
 
-const bootstrapClasses = {
+export const bootstrapClasses = {
     popup: 'card',
     cancelButton: 'btn btn-danger',
     denyButton: 'btn btn-secondary',

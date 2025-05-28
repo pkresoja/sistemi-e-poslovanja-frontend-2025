@@ -3,6 +3,7 @@ import Loading from '@/components/Loading.vue';
 import Navigation from '@/components/Navigation.vue';
 import type { MovieModel } from '@/models/movie.model';
 import { MovieService } from '@/services/movie.service';
+import { formatDate } from '@/utils';
 import { ref } from 'vue';
 import { useRoute } from 'vue-router';
 
@@ -43,7 +44,7 @@ MovieService.getMovieByShortUrl(short)
                         </tr>
                         <tr>
                             <th scope="row">Izmenjeno datuma:</th>
-                            <td>{{ movie.updatedAt ?? movie.createdAt }}</td>
+                            <td>{{ formatDate(movie.updatedAt ?? movie.createdAt) }}</td>
                         </tr>
                     </tbody>
                 </table>

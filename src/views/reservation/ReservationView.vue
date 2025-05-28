@@ -2,6 +2,7 @@
 import Loading from '@/components/Loading.vue';
 import Navigation from '@/components/Navigation.vue';
 import { useLogout } from '@/hooks/logout.hook';
+import { useRating } from '@/hooks/rating.hook';
 import type { ReservationModel } from '@/models/reservation.model';
 import { ReservationService } from '@/services/reservation.service';
 import { formatDate, showConfirm } from '@/utils';
@@ -10,11 +11,14 @@ import { useRouter } from 'vue-router';
 
 const reservations = ref<ReservationModel[]>()
 const router = useRouter()
+const rating = useRating()
 const logout = useLogout()
 
-ReservationService.getReservations()
-    .then(rsp => reservations.value = rsp.data)
-    .catch(e => logout(e))
+function loadReservations() {
+    ReservationService.getReservations()
+        .then(rsp => reservations.value = rsp.data)
+        .catch(e => logout(e))
+}
 
 function deleteReservation(model: ReservationModel) {
     showConfirm(
@@ -28,8 +32,31 @@ function deleteReservation(model: ReservationModel) {
         })
 }
 
+function payReservation(model: ReservationModel) {
+    showConfirm(`Plati rezervaciju ${model.projection.movie.title} za ${formatDate(model.projection.time)}?`, () => {
+        ReservationService.payReservation(model.reservationId)
+            .then(rsp => loadReservations())
+            .catch(e => logout(e))
+    })
+}
+
+async function watchReservation(model: ReservationModel) {
+    const val = await rating(`Ocenite ${model.projection.movie.title}`)
+    if (val != null && val != 0) {
+        ReservationService.rateReservation(model.reservationId, val)
+            .then(rsp => loadReservations())
+            .catch(e => logout(e))
+    }
+}
+
 function isOutdated(model: ReservationModel) {
     return new Date(model.projection.time) >= new Date() ? 'text-success fw-bold' : 'text-danger fw-bold'
+}
+
+loadReservations()
+
+function showRatingModal() {
+    throw new Error('Function not implemented.');
 }
 </script>
 
@@ -75,14 +102,29 @@ function isOutdated(model: ReservationModel) {
                 <td>{{ formatDate(r.updatedAt ?? r.createdAt) }}</td>
                 <td>
                     <div class="btn-group">
-                        <button class="btn btn-sm btn-success"
-                            @click="() => router.push(`/reservation/${r.reservationId}`)"
-                            :disabled="new Date(r.projection.time) <= new Date()">
-                            <i class="fa-solid fa-pen-to-square"></i>
-                        </button>
-                        <button type="button" class="btn btn-sm btn-danger" @click="deleteReservation(r)">
-                            <i class="fa-solid fa-trash-can"></i>
-                        </button>
+                        <template v-if="r.paidAt == null">
+                            <button type="button" class="btn btn-sm btn-primary" @click="payReservation(r)"
+                                :disabled="new Date(r.projection.time) <= new Date()">
+                                <i class="fa-solid fa-credit-card"></i>
+                            </button>
+                            <button class="btn btn-sm btn-success"
+                                @click="() => router.push(`/reservation/${r.reservationId}`)"
+                                :disabled="new Date(r.projection.time) <= new Date()">
+                                <i class="fa-solid fa-pen-to-square"></i>
+                            </button>
+                            <button type="button" class="btn btn-sm btn-danger" @click="deleteReservation(r)">
+                                <i class="fa-solid fa-trash-can"></i>
+                            </button>
+                        </template>
+                        <template v-else>
+                            <RouterLink :to="`/reservation/${r.reservationId}/details`" class="btn btn-sm btn-primary">
+                                <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                            </RouterLink>
+                            <button type="button" class="btn btn-sm btn-warning" @click="watchReservation(r)"
+                                :disabled="new Date(r.projection.time) <= new Date()">
+                                <i class="fa-solid fa-star-half-stroke"></i>
+                            </button>
+                        </template>
                     </div>
                 </td>
             </tr>

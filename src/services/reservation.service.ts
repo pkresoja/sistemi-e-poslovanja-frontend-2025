@@ -20,6 +20,14 @@ export class ReservationService {
         return await UserService.useAxios('/reservation', 'post', model)
     }
 
+    static async payReservation(id: number) {
+        return await UserService.useAxios(`/reservation/${id}/pay`, 'put')
+    }
+
+    static async rateReservation(id: number, rating: number) {
+        return await UserService.useAxios(`/reservation/${id}/rate`, 'put', { rating })
+    }
+
     static async updateReservation(id: number, projectionId: number, numOfSeats: number) {
         return await UserService.useAxios(`/reservation/${id}`, 'put', {
             projectionId, numOfSeats
